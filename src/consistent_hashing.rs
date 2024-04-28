@@ -78,4 +78,42 @@ impl ServerPool {
             }
         }
     }
+
+
+    // Retrieve the server container for a given request ID based on consistent hashing
+    pub fn get_server_container(&self, req_id: usize) -> Option<Arc<ServerContainer>> {
+        let slot = hash_request(req_id);
+        let hash_map = self.hash_map.read().unwrap();
+
+        // Direct match
+        if let Some(vs) = hash_map.get(&slot) {
+            return Some(vs.server_container.clone());
+        }
+
+        // Linear probing to find the nearest slot with a virtual server
+        for i in 1..TOTAL_SLOTS {
+            let check_slot = (slot + i) % self.slots;
+            if let Some(vs) = hash_map.get(&check_slot) {
+                return Some(vs.server_container.clone());
+            }
+        }
+
+        None
+    }
+
+    // Return the list of server containers managed by the pool
+    pub fn server_containers(&self) -> Vec<Arc<ServerContainer>> {
+        self.servers.clone()
+    }
+
+    // Return the list of virtual servers in the consistent hash map
+    pub fn virtual_servers(&self) -> Vec<Arc<VirtualServer>> {
+        let hash_map = self.hash_map.read().unwrap();
+        let mut vs_list: Vec<Arc<VirtualServer>> = hash_map.values().cloned().collect();
+
+        // Sort by slot for easy visualization and debugging
+        vs_list.sort_by_key(|vs| vs.slot);
+
+        vs_list
+    }
 }
