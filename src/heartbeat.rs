@@ -32,7 +32,7 @@ pub async fn heartbeat(State(ctx): State<Arc<AppContext>>,
     let mut hb_time = vec![];
 
     let servers = ctx.app_config.servers.read().unwrap();
-    // loop through all the configs and see if they are alive
+    // loop through all the configurations and see if they are alive
     for server in servers.iter() {
         let req_start = Instant::now();
         // make a request
