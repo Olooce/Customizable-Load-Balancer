@@ -36,5 +36,46 @@ pub struct ServerPool {
 }
 
 impl ServerPool {
+    // Create a new server pool with the specified number of server containers and slots
+    pub fn new(num_containers: usize, num_slots: usize) -> ServerPool {
+        ServerPool {
+            servers: Vec::with_capacity(num_containers),
+            hash_map: Arc::new(RwLock::new(BTreeMap::new())),
+            slots: num_slots,
+        }
+    }
 
+    // Initialize the server pool with server containers and virtual servers
+    pub fn initialize(&mut self) {
+        // Create server containers
+        for i in 0..NUM_SERVER_CONTAINERS {
+            self.servers.push(Arc::new(ServerContainer {
+                id: i,
+                name: format!("Server-{}", i),
+            }));
+        }
+
+        // Create virtual servers for each server container
+        {
+            let mut hash_map = self.hash_map.write().unwrap();
+            for (i, container) in self.servers.iter().enumerate() {
+                for j in 0..VIRTUAL_SERVERS_PER_CONTAINER {
+                    let mut slot = hash_virtual_server(i, j);
+
+                    // Apply linear probing if there's a conflict
+                    while hash_map.contains_key(&slot) {
+                        slot = (slot + 1) % self.slots;
+                    }
+
+                    hash_map.insert(
+                        slot,
+                        Arc::new(VirtualServer {
+                            server_container: container.clone(),
+                            slot,
+                        }),
+                    );
+                }
+            }
+        }
+    }
 }
