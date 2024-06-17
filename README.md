@@ -38,10 +38,8 @@
 
 ---
 
-<div style="background-color:#f8f9fa; padding:2px; border-radius:10px; margin-bottom:20px;">
-  <p style="font-size:1.1em; text-align:center;">
-    Before all the shenanigans, here is the <a href="#analysis" style="text-decoration:none; color:#007bff;"><b>analysis</b></a> if you want to dive right into the most important part of this project.
-  </p>
+<div>
+  <p> Before all the shenanigans, here is the <a href="#analysis" style="text-decoration:none; color:#007bff;"><b>analysis</b></a> if you want to dive right into the most important part of this project. </p>
 </div>
 
 ---
