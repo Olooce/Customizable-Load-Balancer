@@ -38,9 +38,7 @@
 
 ---
 
-<div>
   <p> Before all the shenanigans, here is the <a href="#analysis" style="text-decoration:none; color:#007bff;"><b>analysis</b></a> if you want to dive right into the most important part of this project. </p>
-</div>
 
 ---
 ## Overview
