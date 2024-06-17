@@ -9,7 +9,7 @@
 </h1>
 
 <p align="center">
-  <img src="./images/load_balancer_img.webp" alt="Load Balancer Image" width="200" style="border-radius: 50%;"/>
+  <img src="./images/load_balancer_img.jpg" alt="Load Balancer Image" width="200" style="border-radius: 50%;"/>
 </p>
 
 <h1 align="center">Load Balancer Task</h1>
