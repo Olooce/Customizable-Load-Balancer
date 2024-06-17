@@ -78,6 +78,11 @@ We are additionally using <b>*Rust*</b> for its performance and memory safety, <
 
 
 
+
+
+
+## How To Run
+
 >⚠️ **Platform Compatibility Warning**
 > 
 >This project has been tested and confirmed to work on Linux-based platforms, including:
@@ -87,53 +92,77 @@ We are additionally using <b>*Rust*</b> for its performance and memory safety, <
 
 
 
+To clone and run this application, you'll need the following tools installed on your computer:
+  -  [Git](https://git-scm.com)
+  - [Docker](https://www.docker.com/)
+  - [Python](https://www.python.org/)
 
-## How To Run
 
-To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+- **Step 1:** **Clone this repository:**
+    ```bash
+    git clone https://github.com/nerdistry/Customizable-Load-Balancer.git 
+    ```
 
-```bash
-# Clone this repository
-$ git clone https://github.com/nerdistry/EscrowWebApp.git 
+- **Step 2:** **Navigate into the project directory:**
+    ```bash
+    cd Customizable-Load-Balancer
+    ```
+- **Step 3:** **How to actually implement the task:**
+    - **Step 3.1:** **Add servers to the load balancer:**
+    ```bash
+    curl "http://localhost:5001/add" -X POST -H "Content-Type: application/json" -d '{"n":1,"names":["hate","love","big","small"]}' | jq
+    ```
+    This command sends a POST request to the load balancer to add new servers. 
 
-# Delete the node modules and package-lock files in both the front and back end folders.
+    The `-d` option specifies the data to be sent in JSON format, adding servers named "hate", "love", "big", and "small". 
+    
+    The `jq` tool is used to format the JSON response.
+    After adding the servers the response should look like the image below:
+      ![Server Addition Response](./images/add-server-response-no-error.jpg)
+          This response indicates the status of the server addition process. A status of `0` or `1` means success anything else is an error.
 
-# Go into the front end folder
-$ cd frontend
+    Monitor the errors. An error might look like this:
+     ![Server Addition Response](./images/add-server-response-error.jpg)
+          This shows that you have already added the servers under the same name. Recall that server names are unique, hence the error.
 
-# Install dependencies for the front end.
-$ npm install
+ - **Step 3.2:** **Start multiple requests:**
+    ```bash
+    ./start_multiple.sh
+    ```
+    This script sends multiple requests to the load balancer, changing the dates and logging the request paths, servers used, and response times.
 
-#Go back a directory
-$ cd ..
+    Make sure to monitor the logs; the logs will show the details of each request sent and the corresponding responses. This helps in analyzing the load distribution and performance of the load balancer.
 
-# Go into the back end folder
-$ cd backend
+    Here's how it looks on our end:
+     ![Server Addition Response](./images/detailed-logs.jpg)
 
-# Install dependencies for the backend end.
-$ npm install
+- **Step 3.2:** **Monitoring with Prometheus:**
+  From the Prometheus metrics endpoint, we gathered various statistics, and we were able to monitor the state of the application. Example metrics as below:
+   ```plaintext
+   klein_http_request_duration_seconds_bucket{handler="big",le="0.005"} 0
+   klein_http_request_duration_seconds_bucket{handler="big",le="0.01"} 0
+   klein_http_request_duration_seconds_bucket{handler="big",le="0.025"} 0
+   klein_http_request_duration_seconds_bucket{handler="big",le="0.05"} 0
+   klein_http_request_duration_seconds_bucket{handler="big",le="0.1"} 0
+   klein_http_request_duration_seconds_bucket{handler="big",le="0.25"} 0
+   klein_http_request_duration_seconds_bucket{handler="big",le="0.5"} 0
+   klein_http_request_duration_seconds_bucket{handler="big",le="1"} 0
+   klein_http_request_duration_seconds_bucket{handler="big",le="2.5"} 5
+   klein_http_request_duration_seconds_bucket{handler="big",le="5"} 5
+   klein_http_request_duration_seconds_bucket{handler="big",le="10"} 5
+   ```
+ 
+    And some metrics as observed from the interface:
 
-#Install hardhat
-$ npx hardhat
+    ![Server Addition Response](./images/detailed-logs.jpg)
 
-#Go back a directory
-$ cd ..
 
-# Go into the front end folder
-$ cd frontend
 
-# Run the app
-$ npm start
 
-```
 
-> **Note**
-> 
->Remember for Windows you have to have XAMPP installed. And the database we are using is MongoDB.
->
-> ⚠️⚠️ We're using testnets for this web application and for security reasons, it is highly recommended you follow suit. 
->
-<!-- > If you're stuck breathe in-out then check the above gif. -->
+  
+
+
 
 
 ## Credits
