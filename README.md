@@ -29,17 +29,19 @@
 <p align="center">
   <a href="#overview">Overview</a> •
   <a href="#key-features">Key Features</a> •
-  <a href="#download">Download</a> •
-  <a href="#credits">Credits</a> •
-  <a href="#related">Related</a> •
-  <a href="#license">License</a>
+  <a href="#how-to-run">How To Run</a> •
+  <a href="#analysis">Analysis</a> •
+  <a href="#contributions">Contributions</a> 
+
 </p>
 
 <!-- ![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/app/img/markdownify.gif) -->
 
 ## Overview
+Before all the shenanigans, here is the <a href="#analysis"> <b> analysis </b> </a>  if you want to dive right into most important part of this project. 
 
-This project involves implementing a load balancer that distributes requests from multiple clients asynchronously among several servers to evenly distribute the load. 
+This project involves implementing a load balancer that distributes requests from multiple clients asynchronously among several servers to evenly distribute the load. You can have a look at the task here: [DS_Assign_LB_2024.pdf](./useful-docs/DS_Assign_LB_2024.pdf)
+
 The load balancer uses consistent hashing to manage multiple replicas of a service. 
 We are additionally using <b>*Rust*</b> for its performance and memory safety, <b>*Prometheus*</b> for monitoring and gathering metrics, <b>*NASA API*</b> as our backend service for demonstrating the load distribution and <b>*Docker*</b> providing an isolated environment for running the server instances.
 
@@ -108,7 +110,7 @@ To clone and run this application, you'll need the following tools installed on 
     cd Customizable-Load-Balancer
     ```
 - **Step 3:** **How to actually implement the task:**
-    - **Step 3.1:** **Add servers to the load balancer:**
+  - **Step 3.1:** **Add servers to the load balancer:**
     ```bash
     curl "http://localhost:5001/add" -X POST -H "Content-Type: application/json" -d '{"n":1,"names":["hate","love","big","small"]}' | jq
     ```
@@ -126,165 +128,128 @@ To clone and run this application, you'll need the following tools installed on 
           This shows that you have already added the servers under the same name. Recall that server names are unique, hence the error.
 
   - **Step 3.2:** **Start multiple requests:**
-     ```bash
-     ./start_multiple.sh
-     ```
-     This script sends multiple requests to the load balancer, changing the dates and logging the request paths, servers used, and response times.
+    ```bash
+    ./start_multiple.sh
+    ```
+    This script sends multiple requests to the load balancer, changing the dates and logging the request paths, servers used, and response times.
 
-     Make sure to monitor the logs; the logs will show the details of each request sent and the corresponding responses. This helps in analyzing the load distribution and performance of the load balancer.
+    Make sure to monitor the logs; the logs will show the details of each request sent and the corresponding responses. This helps in analyzing the load distribution and performance of the load balancer.
 
-     Here's how it looks on our end:
-      ![Logging Information](./images/detailed-logs.jpg)
+    Here's how it looks on our end:
+     ![Logging Information](./images/detailed-logs.jpg)
 
-    - **Step 3.2:** **Monitoring with Prometheus:**
-      From the Prometheus metrics endpoint, we gathered various statistics, and we were able to monitor the state of the application. Example metrics as below:
-       ```plaintext
-       klein_http_request_duration_seconds_bucket{handler="big",le="0.005"} 0
-       klein_http_request_duration_seconds_bucket{handler="big",le="0.01"} 0
-       klein_http_request_duration_seconds_bucket{handler="big",le="0.025"} 0
-       klein_http_request_duration_seconds_bucket{handler="big",le="0.05"} 0
-       klein_http_request_duration_seconds_bucket{handler="big",le="0.1"} 0
-       klein_http_request_duration_seconds_bucket{handler="big",le="0.25"} 0
-       klein_http_request_duration_seconds_bucket{handler="big",le="0.5"} 0
-       klein_http_request_duration_seconds_bucket{handler="big",le="1"} 0
-       klein_http_request_duration_seconds_bucket{handler="big",le="2.5"} 5
-       klein_http_request_duration_seconds_bucket{handler="big",le="5"} 5
-       klein_http_request_duration_seconds_bucket{handler="big",le="10"} 5
-       ```
+  - **Step 3.3:** **Monitoring with Prometheus:**
+   From the Prometheus metrics endpoint, we gathered various statistics, and we were able to monitor the state of the application. Example metrics as below:
+    ```plaintext
+    klein_http_request_duration_seconds_bucket{handler="big",le="0.005"} 0
+    klein_http_request_duration_seconds_bucket{handler="big",le="0.01"} 0
+    klein_http_request_duration_seconds_bucket{handler="big",le="0.025"} 0
+    klein_http_request_duration_seconds_bucket{handler="big",le="0.05"} 0
+    klein_http_request_duration_seconds_bucket{handler="big",le="0.1"} 0
+    klein_http_request_duration_seconds_bucket{handler="big",le="0.25"} 0
+    klein_http_request_duration_seconds_bucket{handler="big",le="0.5"} 0
+    klein_http_request_duration_seconds_bucket{handler="big",le="1"} 0
+    klein_http_request_duration_seconds_bucket{handler="big",le="2.5"} 5
+    klein_http_request_duration_seconds_bucket{handler="big",le="5"} 5
+    klein_http_request_duration_seconds_bucket{handler="big",le="10"} 5
+    ```
  
-        And some metrics as observed from the Prometheus interface:
+     And some metrics as observed from the Prometheus interface:
 
-        ![Number of HTTP requests](./images/number-requests-prometheus.jpg)
-        >📝**Note** 
-            > 
-            > The graph above shows the total number of HTTP requests received over time. It illustrates the frequency of incoming requests and helps in understanding the load pattern. A consistent pattern indicates a steady load, while spikes or drops may indicate periods of high or low traffic. 
-            > 
-            > Importance: Monitoring the number of HTTP requests helps in understanding the load on the system and planning for scaling resources accordingly.
-
-      ![HTTP Request Duration (Bucket)](./images/total-duration-prometheus.jpg)
-        >📝**Note** 
-            > 
-            > This graph displays the distribution of HTTP request durations across different buckets (time intervals). Each line represents a different server instance, showing how long it takes to process requests. 
-            > 
-            > Importance: Analyzing the request duration helps in identifying performance bottlenecks and ensuring that requests are handled within acceptable time limits.
-      
-      ![HTTP Request Duration (Sum)](./images/total-duration-sum-prometheus.jpg)
-        >📝**Note** 
-            > 
-            > This graph shows the cumulative sum of HTTP request durations over time for different server instances. It provides an aggregate view of the total time spent processing requests.
-            > 
-            > Importance: Monitoring the total duration helps in understanding the overall load on each server and ensuring that no single server is overwhelmed.
+    ![Number of HTTP Requests](./images/number-requests-prometheus.jpg)
     
-      ![Total HTTP Requests](./images/total-requests-prometheus.jpg)
-        >📝**Note** 
-            > 
-            > This graph shows the total count of HTTP requests processed by each server instance. It illustrates how the load is distributed across different servers.
-            > 
-            > Importance: Ensuring an even distribution of total HTTP requests is crucial for maintaining balanced load distribution and preventing any single server from becoming a bottleneck.
-      
+    > **📝 N O T E**
+    >
+    > The graph above shows the total number of HTTP requests received over time. It illustrates the frequency of incoming requests and helps in understanding the load pattern. A consistent pattern indicates a steady load, while spikes or drops may indicate periods of high or low traffic.
+    >
+    > **Importance:** Monitoring the number of HTTP requests helps in understanding the load on the system and planning for scaling resources accordingly.
 
-![Server Addition Response](./images/total-duration-prometheus.jpg)
+    ![HTTP Request Duration (Bucket)](./images/total-duration-prometheus.jpg)
 
+    > **📝 N O T E**
+    >
+    > This graph displays the distribution of HTTP request durations across different buckets (time intervals). Each line represents a different server instance, showing how long it takes to process requests.
+    >
+    > **Importance:** Analyzing the request duration helps in identifying performance bottlenecks and ensuring that requests are handled within acceptable time limits.
 
+     ![HTTP Request Duration (Sum)](./images/total-duration-sum-prometheus.jpg)
+    
+    > **📝 N O T E**
+    >
+    > This graph shows the cumulative sum of HTTP request durations over time for different server instances. It provides an aggregate view of the total time spent processing requests.
+    >
+    > **Importance:** Monitoring the total duration helps in understanding the overall load on each server and ensuring that no single server is overwhelmed.
 
+    ![Total HTTP Requests](./images/total-requests-prometheus.jpg)
 
+    > **📝 N O T E**
+    >
+    > This graph shows the total count of HTTP requests processed by each server instance. It illustrates how the load is distributed across different servers.
+    >
+    > **Importance:** Ensuring an even distribution of total HTTP requests is crucial for maintaining balanced load distribution and preventing any single server from becoming a bottleneck.
+    
+    
+## Analysis
 
+Answering task four of the assignment: [DS_Assign_LB_2024.pdf](./useful-docs/DS_Assign_LB_2024.pdf)
 
+### Question A - 1
 
+**Task:** Launch 10,000 async requests on N = 3 server containers and report the request count handled by each server instance in a bar chart. Explain your observations in the graph and your view on the performance.
 
+**Observations:**
 
+1. **Request Count Handled by Each Server Instance:**
+   
+   ![Request Count per Server](./images/a-1.jpg)
+   
+   The graph above shows the distribution of 10,000 async requests across 3 server containers (`n1`, `n2`, and `n3`).
 
+2. **Performance Analysis:**
+
+   - **Even Distribution:** it shows that the load balancer distributed the requests relatively evenly across the three servers. Server `n1` handled the most requests, followed by `n2`, and then `n3`.
+   - **Efficiency:** the load balancer efficiently managed the incoming requests, ensuring that no single server was overwhelmed. This balanced approach helps in maintaining optimal performance and prevents any server from becoming a bottleneck.
+   - **Scalability:** this observation indicates that the load balancer can scale effectively by adding more servers and still maintain an even distribution of requests.
+
+**View on Performance:**
+
+The load balancer's performance in handling 10,000 async requests with 3 server containers is highly efficient. The relatively even distribution of requests indicates that the load balancer is functioning correctly, providing a balanced load across all servers. This ensures that the system can handle high traffic volumes without any single point of failure, making it a robust solution for scalable applications.
+
+### Question A - 2
+
+**Task:** Increment N from 2 to 6 and launch 10,000 requests on each such increment. Report the average load of the servers at each run in a line chart. Explain your observations in the graph and your view on the scalability of the load balancer implementation.
+
+**Observations:**
+
+1. **Load Distribution Across Server Instances:**
+   
+   ![Total HTTP Requests](./images/a-2-20K.jpg)
+   
+   The line chart above shows the total HTTP requests handled by the server instances as N increments from 2 to 6.
+
+2. **Cumulative HTTP Request Duration:**
+   
+   ![HTTP Request Duration (Sum)](./images/a-2-server-distribution.jpg)
+   
+   The graph above illustrates the cumulative sum of HTTP request durations over time for different server instances as N increments from 2 to 6.
+
+**Performance Analysis:**
+
+- **Incremental Load Handling:** As the number of server instances (N) increases from 2 to 6, the load balancer efficiently distributes the incoming 10,000 requests across the available servers. The total number of HTTP requests handled by each server is well-distributed, indicating that the load balancer effectively balances the load regardless of the number of servers.
   
+- **Cumulative Request Duration:** The cumulative HTTP request duration graph shows a steady increase in total duration as more servers are added. Each server instance contributes to handling the load, which helps in distributing the request processing time evenly. This steady increase in duration indicates that the load balancer scales effectively with the addition of more servers.
 
+- **Scalability:** The load balancer demonstrates excellent scalability. As more servers are added, the load distribution remains balanced, and the system continues to handle a high volume of requests without any single server becoming a bottleneck. This scalability ensures that the system can accommodate increased traffic by simply adding more server instances.
 
+**View on Scalability:**
 
+The load balancer implementation showcases impressive scalability. By incrementally increasing the number of server instances from 2 to 6, the load balancer continues to distribute the requests evenly and maintains optimal performance. The system's ability to scale efficiently with the addition of more servers highlights its robustness and suitability for handling varying levels of traffic, making it a reliable solution for scalable applications.
 
-## Credits
-
-This web app uses the following important packages for the:
-
-**(a) Normal Backend**
-- [Cloudinary](https://cloudinary.com/)
-- [Ethers](https://www.npmjs.com/package/ethers)
-- [Express](https://www.npmjs.com/package/express)
-- [Formik](https://formik.org/docs/overview)
-- [Mongoose](https://www.npmjs.com/package/mongoose)
-- [Slugify](https://www.npmjs.com/package/slugify)
-
-There were just worth mentioning, you can check out the rest in the package-lock.json file in the backend folder.
-
-**(a) Solidity Backend**
-- [Hardhat](https://hardhat.org/hardhat-runner/docs/getting-started)
-- [Ethereum-Waffle](https://ethereum-waffle.readthedocs.io/en/latest/)
-- [Chai](https://ethereum-waffle.readthedocs.io/en/latest/)
-
-
-**(b) Frontend**
-- [Redux Toolkit](https://redux-toolkit.js.org/)
-- [Testing Library](https://www.npmjs.com/package/@testing-library/react)
-- [Template](https://adminlte.io/)
-- [Bootstrap](https://getbootstrap.com/)
-- [Firebase](https://firebase.google.com/)
-- [React](https://reactnative.dev/)
-
-The packages are more than we can mention!
-
-#### Output Structure
----
-
-```shell
-Escrow_Web_App/
-├── backend/
-│   ├── config/
-│   │   └── dbConnect.js
-│   │   └── jwtToken.js
-│   │   └── refreshtoken.js
-│   ├── contracts/
-│   │   └── escrow.sol
-│   ├── controller/
-│   │   └── brandCtrl.js
-│   │   └── categoryCtrl.js
-│   │   └── emailCtrl.js
-│   │   └── productCtrl.js
-│   │   └── userCtrl.js
-│   ├── middlewares/
-│   │   └── authMiddleware.js
-│   │   └── errprHandler.js
-│   │   └── uploadImages.js
-│   ├── models/
-│   │   └── brandModel.js
-│   │   └── cartModel.js
-│   │   └── categoryModel.js
-│   │   └── orderModel.js
-│   │   └── productModel.js
-│   │   └── userModel.js
-│   ├── routes/
-│   │   └── authRoute.js
-│   │   └── brandRoute.js
-│   │   └── categoryRoute.js
-│   │   └── productRoute.js
-│   ├── scripts/
-│   │   └── deploy.js
-│   ├── index.js
-│   └── package.json
-├── frontend/
-│   ├── public/
-│   │   └── index.html
-│   ├── src/
-│   │   ├── components/
-│   │   ├── App.js
-│   │   └── index.js
-│   ├── package.json
-│   └── ...
-└── README.md
-
-```
-
-## License
-
-MIT
+## Contributions
 
 ---
 
-> GitHub [@bryanlwaya](https://github.com/BryanLwaya) &nbsp;&middot;&nbsp;
+> GitHub [@nalugala-vc](https://github.com/nalugala-vc) &nbsp;&middot;&nbsp;
 > GitHub [@fanisheba](https://github.com/nerdistry) &nbsp;&middot;&nbsp;
+> GitHub [@etemesi254](https://github.com/etemesi254) &nbsp;&middot;&nbsp;
+> GitHub [@some-casual-coder](https://github.com/some-casual-coder) &nbsp;
