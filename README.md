@@ -1,11 +1,10 @@
 <h1 align="center">
   <br>
-   <a href="http://localhost"><img src="./images/load_balancer_img.webp" alt="Load Balancer Image" width="200" style="border-radius: 50%;"></a>
+  <a href="http://localhost"><img src="./images/load_balancer_img.webp" alt="Load Balancer Image" width="200" style="border-radius: 50%;"></a>
   <br>
   Load Balancer Task
   <br>
 </h1>
-
 <h4 align="center"> Distribution of requests from multiple clients</a>.</h4>
 
 <p align="center">
@@ -33,14 +32,19 @@
   <a href="#analysis">Analysis</a> •
   <a href="#contributions">Contributions</a> 
 
+
 </p>
 
-<!-- ![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/app/img/markdownify.gif) -->
+---
 
-<details>
+<div style="background-color:#f8f9fa; padding:10px; border-radius:5px; margin-bottom:20px;">
+  <p style="font-size:1.1em; text-align:center;">
+    Before all the shenanigans, here is the <a href="#analysis" style="text-decoration:none; color:#007bff;"><b>analysis</b></a> if you want to dive right into the most important part of this project.
+  </p>
+</div>
 
+---
 ## Overview
-Before all the shenanigans, here is the <a href="#analysis"> <b> analysis </b> </a>  if you want to dive right into most important part of this project. 
 
 This project involves implementing a load balancer that distributes requests from multiple clients asynchronously among several servers to evenly distribute the load. You can have a look at the task here: [DS_Assign_LB_2024.pdf](./useful-docs/DS_Assign_LB_2024.pdf)
 
@@ -52,9 +56,7 @@ We are additionally using <b>*Rust*</b> for its performance and memory safety, <
 - <img src="https://img.shields.io/badge/NASA-0033A0.svg?style=for-the-badge&logo=nasa&logoColor=white" alt="NASA API" width="50"> Serves as our backend service to simulate real-world load and demonstrate the effectiveness of the load balancer.
 - <img src="https://img.shields.io/badge/Docker-2496ED.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" width="50"> Ensures that the application runs consistently across different environments by packaging the application and its dependencies into a container. 
 
-</details>
 
-<details>
 
 ### Key Features
 
@@ -82,11 +84,10 @@ We are additionally using <b>*Rust*</b> for its performance and memory safety, <
 8. **Docker Containerization**:
    - Containerization of server instances using Docker. This provides an isolated and consistent environment for running the servers, making it easier to manage and deploy the application.
 
-</details>
 
 
 
-<details>
+
 
 ## How To Run
 
@@ -192,10 +193,7 @@ To clone and run this application, you'll need the following tools installed on 
     > This graph shows the total count of HTTP requests processed by each server instance. It illustrates how the load is distributed across different servers.
     >
     > **Importance:** Ensuring an even distribution of total HTTP requests is crucial for maintaining balanced load distribution and preventing any single server from becoming a bottleneck.
- 
-</details>
-
-<details>
+    
     
 ## Analysis
 
@@ -252,7 +250,6 @@ The load balancer's performance in handling 10,000 async requests with 3 server 
 **View on Scalability:**
 
 The load balancer implementation showcases impressive scalability. By incrementally increasing the number of server instances from 2 to 6, the load balancer continues to distribute the requests evenly and maintains optimal performance. The system's ability to scale efficiently with the addition of more servers highlights its robustness and suitability for handling varying levels of traffic, making it a reliable solution for scalable applications.
-</details>
 
 ## Contributions
 
