@@ -1,15 +1,13 @@
 <h1 align="center">
   <br>
-  <a href="http://localhost">
     <img src="./images/load_balancer_img.png" alt="Load Balancer Image" width="200">
-  </a>
   <br>
   Load Balancer Task
   <br>
 </h1>
 
 <p align="center">
-<a href="https://www.rust-lang.org/">
+<a href="https://www.rust-lang.org/"  style="text-decoration:none;">
     <img src="https://img.shields.io/badge/Rust-000000.svg?style=for-the-badge&logo=rust&logoColor=white" alt="Rust">
 </a>
 <a href="https://prometheus.io/">
