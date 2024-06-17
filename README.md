@@ -1,13 +1,3 @@
-<h1 align="center">
-  <br>
-  <a href="http://localhost">
-    <img src="./images/load_balancer_img.webp" alt="Load Balancer Image" width="200" style="border-radius: 50%;">
-  </a>
-  <br>
-  Load Balancer Task
-  <br>
-</h1>
-
 <p align="center">
   <img src="./images/load_balancer_img.jpg" alt="Load Balancer Image" width="200" style="border-radius: 50%;"/>
 </p>
