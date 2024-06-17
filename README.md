@@ -122,39 +122,73 @@ To clone and run this application, you'll need the following tools installed on 
           This response indicates the status of the server addition process. A status of `0` or `1` means success anything else is an error.
 
     Monitor the errors. An error might look like this:
-     ![Server Addition Response](./images/add-server-response-error.jpg)
+     ![Server Addition Error Response](./images/add-server-response-error.jpg)
           This shows that you have already added the servers under the same name. Recall that server names are unique, hence the error.
 
- - **Step 3.2:** **Start multiple requests:**
-    ```bash
-    ./start_multiple.sh
-    ```
-    This script sends multiple requests to the load balancer, changing the dates and logging the request paths, servers used, and response times.
+  - **Step 3.2:** **Start multiple requests:**
+     ```bash
+     ./start_multiple.sh
+     ```
+     This script sends multiple requests to the load balancer, changing the dates and logging the request paths, servers used, and response times.
 
-    Make sure to monitor the logs; the logs will show the details of each request sent and the corresponding responses. This helps in analyzing the load distribution and performance of the load balancer.
+     Make sure to monitor the logs; the logs will show the details of each request sent and the corresponding responses. This helps in analyzing the load distribution and performance of the load balancer.
 
-    Here's how it looks on our end:
-     ![Server Addition Response](./images/detailed-logs.jpg)
+     Here's how it looks on our end:
+      ![Logging Information](./images/detailed-logs.jpg)
 
-- **Step 3.2:** **Monitoring with Prometheus:**
-  From the Prometheus metrics endpoint, we gathered various statistics, and we were able to monitor the state of the application. Example metrics as below:
-   ```plaintext
-   klein_http_request_duration_seconds_bucket{handler="big",le="0.005"} 0
-   klein_http_request_duration_seconds_bucket{handler="big",le="0.01"} 0
-   klein_http_request_duration_seconds_bucket{handler="big",le="0.025"} 0
-   klein_http_request_duration_seconds_bucket{handler="big",le="0.05"} 0
-   klein_http_request_duration_seconds_bucket{handler="big",le="0.1"} 0
-   klein_http_request_duration_seconds_bucket{handler="big",le="0.25"} 0
-   klein_http_request_duration_seconds_bucket{handler="big",le="0.5"} 0
-   klein_http_request_duration_seconds_bucket{handler="big",le="1"} 0
-   klein_http_request_duration_seconds_bucket{handler="big",le="2.5"} 5
-   klein_http_request_duration_seconds_bucket{handler="big",le="5"} 5
-   klein_http_request_duration_seconds_bucket{handler="big",le="10"} 5
-   ```
+    - **Step 3.2:** **Monitoring with Prometheus:**
+      From the Prometheus metrics endpoint, we gathered various statistics, and we were able to monitor the state of the application. Example metrics as below:
+       ```plaintext
+       klein_http_request_duration_seconds_bucket{handler="big",le="0.005"} 0
+       klein_http_request_duration_seconds_bucket{handler="big",le="0.01"} 0
+       klein_http_request_duration_seconds_bucket{handler="big",le="0.025"} 0
+       klein_http_request_duration_seconds_bucket{handler="big",le="0.05"} 0
+       klein_http_request_duration_seconds_bucket{handler="big",le="0.1"} 0
+       klein_http_request_duration_seconds_bucket{handler="big",le="0.25"} 0
+       klein_http_request_duration_seconds_bucket{handler="big",le="0.5"} 0
+       klein_http_request_duration_seconds_bucket{handler="big",le="1"} 0
+       klein_http_request_duration_seconds_bucket{handler="big",le="2.5"} 5
+       klein_http_request_duration_seconds_bucket{handler="big",le="5"} 5
+       klein_http_request_duration_seconds_bucket{handler="big",le="10"} 5
+       ```
  
-    And some metrics as observed from the interface:
+        And some metrics as observed from the Prometheus interface:
 
-    ![Server Addition Response](./images/detailed-logs.jpg)
+        ![Number of HTTP requests](./images/number-requests-prometheus.jpg)
+        >📝**Note** 
+            > 
+            > The graph above shows the total number of HTTP requests received over time. It illustrates the frequency of incoming requests and helps in understanding the load pattern. A consistent pattern indicates a steady load, while spikes or drops may indicate periods of high or low traffic. 
+            > 
+            > Importance: Monitoring the number of HTTP requests helps in understanding the load on the system and planning for scaling resources accordingly.
+
+      ![HTTP Request Duration (Bucket)](./images/total-duration-prometheus.jpg)
+        >📝**Note** 
+            > 
+            > This graph displays the distribution of HTTP request durations across different buckets (time intervals). Each line represents a different server instance, showing how long it takes to process requests. 
+            > 
+            > Importance: Analyzing the request duration helps in identifying performance bottlenecks and ensuring that requests are handled within acceptable time limits.
+      
+      ![HTTP Request Duration (Sum)](./images/total-duration-sum-prometheus.jpg)
+        >📝**Note** 
+            > 
+            > This graph shows the cumulative sum of HTTP request durations over time for different server instances. It provides an aggregate view of the total time spent processing requests.
+            > 
+            > Importance: Monitoring the total duration helps in understanding the overall load on each server and ensuring that no single server is overwhelmed.
+    
+      ![Total HTTP Requests](./images/total-requests-prometheus.jpg)
+        >📝**Note** 
+            > 
+            > This graph shows the total count of HTTP requests processed by each server instance. It illustrates how the load is distributed across different servers.
+            > 
+            > Importance: Ensuring an even distribution of total HTTP requests is crucial for maintaining balanced load distribution and preventing any single server from becoming a bottleneck.
+      
+
+![Server Addition Response](./images/total-duration-prometheus.jpg)
+
+
+
+
+
 
 
 
