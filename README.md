@@ -1,30 +1,17 @@
 <h1 align="center">
   <br>
-  <a href="http://localhost">
     <img src="./images/load_balancer_img.png" alt="Load Balancer Image" width="200">
-  </a>
   <br>
   Load Balancer Task
   <br>
 </h1>
 
-<p align="center">
-<a href="https://www.rust-lang.org/">
-    <img src="https://img.shields.io/badge/Rust-000000.svg?style=for-the-badge&logo=rust&logoColor=white" alt="Rust">
-</a>
-<a href="https://prometheus.io/">
-    <img src="https://img.shields.io/badge/Prometheus-E6522C.svg?style=for-the-badge&logo=prometheus&logoColor=white" alt="Prometheus">
-</a>
-<a href="https://www.nasa.gov/">
-    <img src="https://img.shields.io/badge/NASA-0033A0.svg?style=for-the-badge&logo=nasa&logoColor=white" alt="NASA API">
-</a>
-<a href="https://www.docker.com/">
-    <img src="https://img.shields.io/badge/Docker-2496ED.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
-</a>
-
-
-
-</p>
+<div align="center">
+    <img src="https://img.shields.io/badge/Rust-000000.svg?style=for-the-badge&logo=rust&logoColor=white" alt="Rust" style="border-radius: 50%;">
+    <img src="https://img.shields.io/badge/Prometheus-E6522C.svg?style=for-the-badge&logo=prometheus&logoColor=white" alt="Prometheus" style="border-radius: 50%;">
+    <img src="https://img.shields.io/badge/NASA-0033A0.svg?style=for-the-badge&logo=nasa&logoColor=white" alt="NASA API" style="border-radius: 50%;">
+    <img src="https://img.shields.io/badge/Docker-2496ED.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" style="border-radius: 50%;">
+</div>
 
 <p align="center">
   <a href="#overview">Overview</a> •
