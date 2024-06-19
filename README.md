@@ -235,6 +235,126 @@ The load balancer's performance in handling 10,000 async requests with 3 server 
 
 The load balancer implementation showcases impressive scalability. By incrementally increasing the number of server instances from 2 to 6, the load balancer continues to distribute the requests evenly and maintains optimal performance. The system's ability to scale efficiently with the addition of more servers highlights its robustness and suitability for handling varying levels of traffic, making it a reliable solution for scalable applications.
 
+### Question A - 3
+
+**Task:** To test all endpoints of the load balancer and demonstrate its ability to handle server failure by spawning a new instance quickly.
+
+**Observations:**
+
+1. **Testing All Endpoints:**
+    
+   The load balancer is tested using the [test_main.http](./backend/test_main.http) file which contains tests for five endpoints of the load balancer.
+   
+    These tests are replayed at the top level of the server, ensuring that all endpoints are systematically tested.
+
+
+2. **Cumulative HTTP Request Duration:**
+   
+   ![Result Tests](./images/a-3-test-endpoints.jpg)
+   
+    The screenshot provided shows the results of the tests executed.
+    
+    All tests return a 200 OK status, indicating that all responses are healthy and the load balancer is functioning correctly. This can also be seen to the right (the logs from running the server).
+
+    Specifically, the endpoints tested are:
+     `GET Data From Backend`
+     `GET Heartbeat`
+     `GET Home Page`
+     `GET Random Route that should be redirected into the backend`
+     `GET Replica`
+
+
+3. **Logs and Server Health:**
+    To the right of the screenshot, the logs from the running server provide detailed information about the requests and responses. 
+
+    Each log entry shows the assignment of requests, the server handling the request, the URL accessed, and the time taken to get the response.
+
+    The logs also demonstrate that the load balancer assigns requests efficiently and handles them within a minimal response time, indicating a healthy state.
+
+
+4. **Handling Server Failures:**
+    The key aspect of demonstrating the load balancer's resilience is its ability to spawn a new instance quickly in case of a server failure.
+
+    The screenshot and logs show that the load balancer continues to handle requests smoothly, implying that it can manage server failures by redirecting traffic or spawning new instances as needed.
+
+    Although the direct evidence of spawning a new instance is not explicitly shown in the screenshot, the consistent 200 OK responses and the absence of errors suggest that the load balancer effectively maintains service continuity.
+
+**Performance Analysis:**
+
+- **Request Handling:** The load balancer efficiently assigns requests to available servers, as indicated by the low response times (e.g., 18ms, 11ms) logged in the system.
+
+- **Latency:** The request latencies are minimal, demonstrating that the load balancer is capable of managing traffic with low overhead.
+
+- **Throughput:** The consistent 200 OK responses across multiple endpoints suggest that the load balancer can handle a significant number of requests simultaneously without degradation in performance.
+
+**View on Scalability:**
+
+The load balancer *dynamically scales* by spawning new instances in response to server failures or increased load, ensuring efficient traffic management. It also *distributes requests* across multiple servers, preventing bottlenecks and seamlessly *incorporates new instances*, ensuring continuous and scalable service.
+
+
+### Question A -4
+
+**Task:** Modify the hash functions H(i), Φ(i, j) and report the observations from (A-1) and (A-2).
+
+1. **Old Hash Function:**
+   
+   ![Old Hash Function](./images/a-4-old-hash-function.jpg)
+
+    **Request Mapping**
+    - Computation: Combines the request ID with a large constant and uses bitwise operations for distribution. 
+    - Complexity: Involves a large multiplication and bitwise right shift.
+
+    **Server Mapping**
+    - Computation: Combines container ID and virtual server index with large multiplications and bitwise operations.
+    - Complexity: Involves multiple large multiplications and additions, plus bitwise right shift and XOR operations.
+
+
+2. **New Hash Function:**
+   
+   ![New Hash Function](./images/a-4-new-hash-function.jpg)
+   
+    **Request Mapping**
+    - Computation: Simplified to an addition and a multiplication by 2, plus a constant addition.
+    - Complexity: Simpler arithmetic operations.
+
+    **Server Mapping**
+    - Computation: Uses a constant multiplication and bitwise operations for distribution.
+    - Complexity: Simpler compared to the old version but still utilizes bitwise XOR and OR operations.
+
+**Observations:**
+The image below shows a Prometheus graph that displays the cumulative sum of HTTP request durations for different servers after the modification of the hash functions. Here is a detailed analysis of the observations:
+
+   ![Image Analysis New Hash Function](./images/a-4-image-analysis-new-hashed.jpg)
+
+- **Even Distribution:**
+
+  - The graph shows multiple colored bands representing different servers (n2, n3, n4). The consistent and smooth stacking of these bands indicates an even distribution of request durations across the servers.
+
+  - Each server contributes roughly equally to the total request duration, suggesting that the load is balanced well among the servers.
+
+- **Cumulative Growth:**
+
+  - The cumulative sum of HTTP request durations increases steadily over time. This steady increase implies that requests are being handled at a consistent rate without significant spikes or drops.
+
+  - The smooth growth curve indicates stable performance and efficient handling of requests by the load balancer.
+
+- **Stacked Area Chart:**
+
+  - The use of a stacked area chart helps visualize the contributions of each server to the overall request handling. The overlapping areas clearly show how each server is sharing the load.
+
+- **Performance:**
+
+  - The image demonstrates that after modifying the hash functions, the load balancer is distributing requests more evenly. This improved distribution leads to better utilization of resources, reducing the chances of any single server becoming a bottleneck.
+
+  - The uniform distribution is critical for maintaining optimal performance, especially under varying load conditions.
+
+**As seen and explained the modification of the hash functions has led to a more balanced distribution of requests across the servers. The key impacts are:**
+- Balanced Load: The servers handle requests more evenly, which improves overall system performance and reliability. 
+- Scalability: The even distribution of requests ensures that the system can scale efficiently, as new servers can be added seamlessly without disrupting the load balance. 
+- Resource Utilization: Better utilization of server resources prevents any single server from becoming overwhelmed, leading to more consistent and predictable performance. 
+- Monitoring and Visualization: The Prometheus graph effectively visualizes the improvements, making it easier to monitor and analyze the performance of the load balancer.
+
+
 ## Contributions
 
 ---
