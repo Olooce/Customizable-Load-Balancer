@@ -1,1 +1,11 @@
 /target
+.idea/
+node_modules/
+.vscode/
+target/
+build/
+dist/
+.DS_Store
+coverage/
+.env
+Thumbs.db
